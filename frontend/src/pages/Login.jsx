@@ -72,15 +72,15 @@ export default function Login() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full rounded-3xl border border-gray-300 bg-white/95 p-8 shadow-2xl shadow-gray-200/20 sm:p-10">
+      <div className="w-full rounded-3xl border border-slate-800 bg-slate-900/95 p-8 shadow-2xl shadow-slate-950/20 sm:p-10">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-semibold text-gray-900">Let's Chat</h1>
-          <p className="mt-2 text-gray-600">Modern real-time chat with email and phone OTP login.</p>
+          <h1 className="text-4xl font-semibold text-white">Let's Chat</h1>
+          <p className="mt-2 text-slate-400">Modern real-time chat with email and phone OTP login.</p>
         </div>
 
         <div className="mb-8 flex items-center justify-center gap-4 text-sm text-slate-400">
           <button
-            className={`flex items-center gap-2 rounded-full px-4 py-2 transition ${usePhone ? 'bg-gray-200 text-gray-700' : 'bg-brand text-white'}`}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 transition ${usePhone ? 'bg-slate-800/50 text-slate-300' : 'bg-brand text-white'}`}
             onClick={() => {
               setUsePhone(false);
               setOtpStep(false);
@@ -89,7 +89,7 @@ export default function Login() {
             <Mail size={16} /> Email Login
           </button>
           <button
-            className={`flex items-center gap-2 rounded-full px-4 py-2 transition ${usePhone ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700'}`}
+            className={`flex items-center gap-2 rounded-full px-4 py-2 transition ${usePhone ? 'bg-brand text-white' : 'bg-slate-800/50 text-slate-300'}`}
             onClick={() => {
               setUsePhone(true);
               setOtpStep(false);
@@ -132,7 +132,7 @@ export default function Login() {
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="e.g. +15551234567"
                       disabled={otpStep}
-                      className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand disabled:opacity-50"
+                      className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand disabled:opacity-50"
                     />
                   </div>
                   <div>
@@ -142,7 +142,7 @@ export default function Login() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your name"
                       disabled={otpStep}
-                      className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand disabled:opacity-50"
+                      className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand disabled:opacity-50"
                     />
                   </div>
                   <div>
@@ -153,7 +153,7 @@ export default function Login() {
                       placeholder="Tell others about yourself..."
                       rows={3}
                       disabled={otpStep}
-                      className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand resize-none disabled:opacity-50"
+                      className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand resize-none disabled:opacity-50"
                     />
                   </div>
                 </>
@@ -165,7 +165,7 @@ export default function Login() {
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="Enter OTP"
                     autoFocus
-                    className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand"
+                    className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand"
                   />
                 </div>
               )}
@@ -180,7 +180,7 @@ export default function Login() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your name"
-                      className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand"
+                      className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand"
                     />
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export default function Login() {
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Tell others about yourself..."
                       rows={3}
-                      className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand resize-none"
+                      className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand resize-none"
                     />
                   </div>
                 </>
@@ -202,7 +202,7 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="mt-2 w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand"
+                  className="mt-2 w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand"
                 />
               </div>
               <div>
@@ -213,7 +213,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Create a password"
-                    className="w-full rounded-3xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none ring-1 ring-gray-300 transition focus:ring-brand"
+                    className="w-full rounded-3xl border border-slate-800 bg-slate-950 px-4 py-3 text-white outline-none ring-1 ring-slate-800 transition focus:ring-brand"
                   />
                   <button
                     type="button"
@@ -227,8 +227,8 @@ export default function Login() {
             </>
           )}
 
-          {message && <p className="rounded-3xl bg-red-100 px-4 py-3 text-sm text-red-700">{message}</p>}
-          {simulation && <p className="rounded-3xl bg-green-100 px-4 py-3 text-sm text-green-700 font-mono">{simulation}</p>}
+          {message && <p className="rounded-3xl bg-red-900/50 px-4 py-3 text-sm text-red-200">{message}</p>}
+          {simulation && <p className="rounded-3xl bg-green-900/50 px-4 py-3 text-sm text-green-200 font-mono">{simulation}</p>}
 
           <button
             type="submit"
@@ -241,7 +241,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setOtpStep(false)}
-              className="w-full rounded-3xl bg-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-300"
+              className="w-full rounded-3xl bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
             >
               Back
             </button>
@@ -253,7 +253,7 @@ export default function Login() {
             <span>{isRegister ? 'Already have an account?' : "Don't have an account?"}</span>
             <button
               type="button"
-              className="font-semibold text-white hover:text-green-600 transition"
+              className="font-semibold text-white hover:text-green-400 transition"
               onClick={() => {
                 setIsRegister((prev) => !prev);
                 setOtpStep(false);

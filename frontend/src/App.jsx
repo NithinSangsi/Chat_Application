@@ -11,7 +11,7 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gray-50 text-gray-900">
+      <div className="min-h-screen bg-slate-950 text-slate-100">
         <AppContent />
       </div>
     </AuthProvider>
