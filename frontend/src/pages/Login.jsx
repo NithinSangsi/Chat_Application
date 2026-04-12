@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Mail, Phone, Eye, EyeOff, Upload } from 'lucide-react';
+import { MessageCircle, Mail, Phone, Eye, EyeOff, Upload } from 'lucide-react';
 
 export default function Login() {
   const { loginUser, registerUser, requestOtp, verifyOtp, loading } = useContext(AuthContext);
@@ -74,6 +74,9 @@ export default function Login() {
     <div className="mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full rounded-3xl border border-slate-800 bg-slate-900/95 p-8 shadow-2xl shadow-slate-950/20 sm:p-10">
         <div className="mb-8 text-center">
+          <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-green-500/10 text-green-400 shadow-lg shadow-green-500/10">
+            <MessageCircle size={32} />
+          </div>
           <h1 className="text-4xl font-semibold text-white">Let's Chat</h1>
           <p className="mt-2 text-slate-400">Modern real-time chat with email and phone OTP login.</p>
         </div>

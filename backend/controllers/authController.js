@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
     }
 
     const token = generateToken(user);
-    res.json({ user: { id: user._id, name: user.name, email: user.email }, token });
+    res.json({ user: { id: user._id, name: user.name, email: user.email, profilePic: user.profilePic, description: user.description }, token });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'Server error while logging in.' });

@@ -122,6 +122,28 @@ export default function Chat() {
     // Clear input immediately for better UX
     setNewMessage('');
     setSelectedFile(null);
+
+    // Create the message object immediately
+    const tempMessage = {
+      _id: Date.now().toString(), // Temporary ID
+      sender: {
+        _id: user.id,
+        name: user.name,
+        profilePic: user.profilePic
+      },
+      receiver: {
+        _id: selectedUser.id,
+        name: selectedUser.name,
+        profilePic: selectedUser.profilePic
+      },
+      text: messageToSend,
+      file: fileToSend ? URL.createObjectURL(fileToSend) : null,
+      fileName: fileToSend ? fileToSend.name : null,
+      createdAt: new Date().toISOString()
+    };
+
+    // Add message to UI immediately
+    setMessages((prev) => [...prev, tempMessage]);
     setSendLoading(true);
 
     const formData = new FormData();
@@ -134,7 +156,26 @@ export default function Chat() {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       const messageData = response.data;
-      setMessages((prev) => [...prev, messageData]);
+      
+      // Replace the temporary message with the real one from server
+      setMessages((prev) => 
+        prev.map((msg) => 
+          msg._id === tempMessage._id ? {
+            ...messageData,
+            sender: {
+              _id: user.id,
+              name: user.name,
+              profilePic: user.profilePic
+            },
+            receiver: {
+              _id: selectedUser.id,
+              name: selectedUser.name,
+              profilePic: selectedUser.profilePic
+            }
+          } : msg
+        )
+      );
+      
       socket.emit('send-message', {
         ...messageData,
         sender: { _id: user.id, name: user.name, profilePic: user.profilePic },
@@ -143,7 +184,8 @@ export default function Chat() {
       socket.emit('user-online', user.id);
     } catch (error) {
       console.error('Send message failed', error);
-      // Restore the message if sending failed
+      // Remove the temporary message and restore input
+      setMessages((prev) => prev.filter((msg) => msg._id !== tempMessage._id));
       setNewMessage(messageToSend);
       setSelectedFile(fileToSend);
     } finally {
@@ -153,7 +195,6 @@ export default function Chat() {
 
   const clearChat = async () => {
     if (!selectedUser) return;
-    if (!window.confirm('Are you sure you want to clear this chat? This action cannot be undone.')) return;
 
     try {
       await api.delete(`/api/messages/clear/${selectedUser.id}`);
@@ -165,6 +206,24 @@ export default function Chat() {
     }
   };
 
+  const deleteChat = async (userId) => {
+    try {
+      // Remove the contact from the users list permanently
+      setUsers((prev) => prev.filter((user) => user._id !== userId));
+      
+      // If the deleted contact was selected, clear selection and messages
+      if (selectedUser?.id === userId) {
+        setSelectedUser(null);
+        setMessages([]);
+      }
+      
+      console.log('Contact deleted successfully');
+    } catch (error) {
+      console.error('Delete contact failed', error);
+      alert('Failed to delete contact.');
+    }
+  };
+
   const handleLogout = () => {
     logout();
   };
@@ -172,10 +231,22 @@ export default function Chat() {
   return (
     <div className="mx-auto flex min-h-screen max-w-7xl flex-col bg-slate-950 px-4 py-6 sm:px-6 lg:px-8">
       <header className="mb-6 flex flex-col gap-4 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900/80 to-slate-800/80 p-5 shadow-xl shadow-slate-950/20 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-3xl font-semibold text-white">Hello, {user.name}</h2>
-          {user.description && <p className="mt-1 text-sm text-slate-300">{user.description}</p>}
-          <p className="mt-1 text-slate-400">Select a contact to start chatting</p>
+        <div className="flex items-center gap-4">
+          {user.profilePic ? (
+            <img
+              src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.profilePic}`}
+              alt={user.name}
+              className="h-12 w-12 rounded-full object-cover border-2 border-slate-700"
+            />
+          ) : (
+            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center text-white text-lg font-semibold">
+              {user.name[0]?.toUpperCase()}
+            </div>
+          )}
+          <div>
+            <h2 className="text-3xl font-semibold text-white">Hello, {user.name}</h2>
+            {user.description && <p className="mt-1 text-sm text-slate-300">{user.description}</p>}
+          </div>
         </div>
         <div className="flex items-center gap-3">
                   <div className="flex flex-col gap-1">
@@ -202,6 +273,7 @@ export default function Chat() {
           selectedUser={selectedUser}
           setSelectedUser={setSelectedUser}
           onlineSet={currentOnlineSet}
+          onDeleteChat={deleteChat}
         />
 
         <main className="rounded-3xl border border-slate-800 bg-slate-900/80 shadow-xl shadow-slate-950/10 overflow-hidden flex flex-col">
@@ -240,9 +312,9 @@ export default function Chat() {
                       <div className="absolute right-0 top-full mt-2 rounded-xl bg-slate-900 border border-slate-700 shadow-xl z-50">
                         <button
                           onClick={clearChat}
-                          className="w-full px-4 py-2 text-left text-sm hover:bg-slate-800 rounded-xl text-slate-300"
+                          className="w-full px-4 py-2 text-left text-sm hover:bg-slate-800 rounded-xl text-slate-300 border-b border-slate-700"
                         >
-                          Clear Chat
+                          Clear Messages
                         </button>
                       </div>
                     )}

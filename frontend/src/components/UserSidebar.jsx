@@ -1,6 +1,6 @@
-import { MessageCircle, Clock } from 'lucide-react';
+import { MessageCircle, Clock, Trash2 } from 'lucide-react';
 
-export default function UserSidebar({ users, selectedUser, setSelectedUser, onlineSet }) {
+export default function UserSidebar({ users, selectedUser, setSelectedUser, onlineSet, onDeleteChat }) {
   const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   // Sort users by recently chatted (you can enhance with last message time from backend)
@@ -29,10 +29,17 @@ export default function UserSidebar({ users, selectedUser, setSelectedUser, onli
             const isActive = selectedUser?.id === item._id;
             const online = onlineSet.has(item._id);
             return (
-              <button
+              <div
                 key={item._id}
+                role="button"
+                tabIndex={0}
                 onClick={() => setSelectedUser({ id: item._id, name: item.name, profilePic: item.profilePic, description: item.description })}
-                className={`w-full rounded-3xl border px-4 py-3 text-left transition ${isActive ? 'border-slate-600 bg-slate-800' : 'border-slate-700 bg-slate-950 hover:bg-slate-900'}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    setSelectedUser({ id: item._id, name: item.name, profilePic: item.profilePic, description: item.description });
+                  }
+                }}
+                className={`w-full rounded-3xl border px-4 py-3 text-left transition relative group ${isActive ? 'border-slate-600 bg-slate-800' : 'border-slate-700 bg-slate-950 hover:bg-slate-900'}`}
               >
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -52,9 +59,23 @@ export default function UserSidebar({ users, selectedUser, setSelectedUser, onli
                       <p className="text-xs text-slate-400 truncate">{item.email || item.phone}</p>
                     </div>
                   </div>
-                  <span className={`h-3 w-3 rounded-full flex-shrink-0 ${online ? 'bg-emerald-500 animate-pulse' : 'bg-slate-600'}`} />
+                  <div className="flex items-center gap-2">
+                    <span className={`h-3 w-3 rounded-full flex-shrink-0 ${online ? 'bg-emerald-500 animate-pulse' : 'bg-slate-600'}`} />
+                    {onDeleteChat && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteChat(item._id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 p-1 rounded-full hover:bg-red-900/50 transition-all duration-200 ml-2"
+                        title="Delete contact permanently"
+                      >
+                        <Trash2 size={14} className="text-red-400 hover:text-red-300" />
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </button>
+              </div>
             );
           })
         )}

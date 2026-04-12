@@ -1,8 +1,9 @@
 import { Download, FileIcon, Trash2 } from 'lucide-react';
 
 export default function MessageBubble({ message, selfId }) {
-  const senderId = message.sender?._id || message.sender || '';
-  const senderName = message.sender?.name || (typeof message.sender === 'string' ? message.sender : 'Unknown');
+  const senderId = typeof message.sender === 'object' ? message.sender._id : message.sender || '';
+  const senderName = typeof message.sender === 'object' ? message.sender.name : (typeof message.sender === 'string' ? message.sender : 'Unknown');
+  const senderProfilePic = typeof message.sender === 'object' ? message.sender.profilePic : null;
   const isSender = senderId === selfId;
   const isImage = message.file && /\.(jpg|jpeg|png|gif|webp|bmp|tiff|svg)$/i.test(message.fileName || '');
   const isVideo = message.file && /\.(mp4|mov|avi|mkv|webm|flv)$/i.test(message.fileName || '');

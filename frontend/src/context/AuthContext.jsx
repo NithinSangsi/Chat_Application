@@ -31,49 +31,64 @@ export function AuthProvider({ children }) {
 
   const loginUser = async ({ email, password }) => {
     setLoading(true);
-    const response = await api.post('/api/auth/login', { email, password });
-    setUser(response.data.user);
-    setToken(response.data.token);
-    setLoading(false);
+    try {
+      const response = await api.post('/api/auth/login', { email, password });
+      setUser(response.data.user);
+      setToken(response.data.token);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const registerUser = async ({ name, email, password, description, profilePic }) => {
     setLoading(true);
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('description', description || '');
-    if (profilePic) formData.append('profilePic', profilePic);
-    const response = await api.post('/api/auth/register', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    setUser(response.data.user);
-    setToken(response.data.token);
-    setLoading(false);
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('description', description || '');
+      if (profilePic) formData.append('profilePic', profilePic);
+      const response = await api.post('/api/auth/register', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setUser(response.data.user);
+      setToken(response.data.token);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const requestOtp = async ({ phone, name }) => {
     setLoading(true);
-    const response = await api.post('/api/auth/otp-request', { phone, name });
-    setLoading(false);
-    return response.data;
+    try {
+      const response = await api.post('/api/auth/otp-request', { phone, name });
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const verifyOtp = async ({ phone, otp, name, description, profilePic }) => {
     setLoading(true);
-    const formData = new FormData();
-    formData.append('phone', phone);
-    formData.append('otp', otp);
-    formData.append('name', name);
-    formData.append('description', description || '');
-    if (profilePic) formData.append('profilePic', profilePic);
-    const response = await api.post('/api/auth/otp-verify', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    setUser(response.data.user);
-    setToken(response.data.token);
-    setLoading(false);
+    try {
+      const formData = new FormData();
+      formData.append('phone', phone);
+      formData.append('otp', otp);
+      formData.append('name', name);
+      formData.append('description', description || '');
+      if (profilePic) formData.append('profilePic', profilePic);
+      const response = await api.post('/api/auth/otp-verify', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setUser(response.data.user);
+      setToken(response.data.token);
+      return response.data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = () => {
